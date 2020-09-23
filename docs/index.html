@@ -339,6 +339,71 @@ void VoiceStream::append(float sample) {
 </code></pre>
           </section>
         </section>
+        <section>
+          <h4>Memory Management</h4>
+          <section>
+            <p>There are two memory allocations...</p>
+          </section>
+          <section>
+            <h4>Static allocation</h4>
+            <p>
+              It happens on the stack. Memory is allocated only in given scope
+            </p>
+            <pre><code>
+              void foo() {
+                int bar;
+              } // bar destroyed here
+
+              int main() {
+                int number;
+              } // number destroyed here;
+
+                </code></pre>
+          </section>
+          <section>
+            <h4>Dynamic allocation</h4>
+            <p>
+              It happens on the heap. Memory is not limited to scope. You can
+              allocate and deallocate with <code>new</code> and
+              <code>delete</code> operators
+            </p>
+            <pre><code>
+      int* getMemory() {
+        int *bar = new int; // allocated one int on the heap
+        return bar;
+      } // bar destroyed, allocated memory is alive
+
+      int main() {
+        int* memory = getMemory();
+        delete memory;
+      } // number destroyed here;
+
+                </code></pre>
+          </section>
+          <section>
+            <h4>But today you have smart pointers.</h4>
+            <p>
+              Smart pointer is a wrapper around raw pointer like
+              <code>int*</code>
+            </p>
+          </section>
+          <section>
+            <h4><code>std::unique_ptr</code></h4>
+            <pre><code>
+      #include &lt;memory&gt;
+
+      std::unique_ptr&lt;int&gt; getMemory(int x) {
+        return std::make_unique&lt;int&gt;(x);
+      } // memory for int allocated in unique_ptr
+
+      int main() {
+        auto memory = getMemory(12345);
+      } // memory destroyed
+        // allocated int also destroyed
+        
+</code></pre>
+          </section>
+        </section>
       </div>
     </div>
 
