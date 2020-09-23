@@ -34,6 +34,9 @@
             size, of pointers to functions that return pointers to functions
             that return <code>void</code>.
           </p>
+          <a href="http://c-faq.com/decl/spiral.anderson.html"
+            >The Clockwise/Spiral Rule</a
+          >
         </section>
         <section>
           <p>C++ is hard.</p>
@@ -183,6 +186,158 @@
 </code></pre>
             </div>
           </div>
+        </section>
+        <section>
+          <h4>Preprocessor directives</h4>
+          <section>
+            <h3><code>#include</code></h3>
+            <pre><code>
+  #include &lt;algorithm&gt;
+  #include "header.h"
+
+</code></pre>
+            <p>Directive will be replaced by content of header file</p>
+            <p>Use angle brackets for system headers</p>
+            <p>and quotes for your own headers</p>
+          </section>
+          <section>
+            <h3><code>#define</code></h3>
+            <pre><code>
+  #define BUFFER_SIZE 1024
+  ...
+  char *buffer[BUFFER_SIZE];
+</code></pre>
+            <p>It is known as C-style constants</p>
+            <p>All occurences of define will be replaced by defined value.</p>
+            <p>Another usage of define is conditional compilation.</p>
+          </section>
+          <section>
+            <h4><code>#ifdef, #ifndef, #else, #endif</code></h4>
+            <pre><code>
+  #ifdef _WIN32
+    #include &lt;WinSock2.h&gt;
+  #else
+    #include &lt;socket.h&gt;
+  #endif
+
+  #ifdef MY_COOL_FEATURE_ENABLED
+    #include "CoolFeature.hpp"
+  #endif
+</code></pre>
+            <p>define something during compilation</p>
+            <pre><code>
+g++ -DMY_COOL_FEATURE_ENABLED main.cpp ...
+</code></pre>
+            <p>Compiler can define its own defines like _WIN32!</p>
+          </section>
+          <section>
+            <h4><code>#ifdef #ifndef #else #endif</code></h4>
+            <p>
+              Remember:
+              <span class="green"
+                >Preprocessor will remove everything that not match given
+                conditions</span
+              >
+            </p>
+          </section>
+          <section>
+            <h4><code>#pragma</code></h4>
+            <p>It gives additional informations for compiler.</p>
+          </section>
+          <section>
+            <p>Assume we have more than one compilation unit</p>
+            <div class="twocolumn">
+              <div>
+                <pre><code>
+// main.cpp
+#include "VoiceStream.h"
+
+int main() {
+  VoiceStream voiceStream;
+  voiceStream.append(51.6f);
+}
+  
+  </code></pre>
+                <p class="important">Why VoiceStream is redeclared?</p>
+              </div>
+              <div>
+                <pre><code>
+// VoiceStream.h
+class VoiceStream {
+  public:
+    void append(float sample);
+};
+  
+  </code></pre>
+                <pre><code>
+// VoiceStream.cpp
+#include "VoiceStream.h"
+
+void VoiceStream::append(float sample) {
+  ...
+}
+  
+  </code></pre>
+              </div>
+            </div>
+          </section>
+          <section>
+            <h4>Header Guard</h4>
+            <pre><code>
+              // VoiceStream.h
+              #ifndef VOICE_STREAM_H_
+              #define VOICE_STREAM_H_
+
+              class VoiceStream {
+                public:
+                  void append(float sample);
+              };
+
+              #endif
+                
+                </code></pre>
+          </section>
+          <section>
+            <h4>Code before preprocessor run</h4>
+            <pre><code>
+              // VoiceStream.h included in VoiceStream.cpp
+              #ifndef VOICE_STREAM_H_
+              #define VOICE_STREAM_H_
+
+              class VoiceStream {
+                public:
+                  void append(float sample);
+              };
+
+              #endif
+
+              // VoiceStream.h included in main.cpp
+              #ifndef VOICE_STREAM_H_
+              #define VOICE_STREAM_H_
+
+              class VoiceStream {
+                public:
+                  void append(float sample);
+              };
+
+              #endif
+                
+                </code></pre>
+          </section>
+          <section>
+            <h4><code>#pragma once</code></h4>
+            <p>Use this directive instead of header guard</p>
+            <pre><code>
+              // VoiceStream.h
+              #pragma once
+
+              class VoiceStream {
+                public:
+                  void append(float sample);
+              };
+                
+</code></pre>
+          </section>
         </section>
       </div>
     </div>
