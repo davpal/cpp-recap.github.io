@@ -1,0 +1,14 @@
+.important {
+  color: #c00;
+}
+
+.green {
+  color: #0c0;
+}
+
+.twocolumn {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 10px;
+  text-align: left;
+}

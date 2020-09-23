@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+
+    <title>reveal.js</title>
+
+    <link rel="stylesheet" href="dist/reset.css" />
+    <link rel="stylesheet" href="dist/reveal.css" />
+    <link rel="stylesheet" href="dist/theme/black.css" id="theme" />
+
+    <!-- Theme used for syntax highlighted code -->
+    <link
+      rel="stylesheet"
+      href="plugin/highlight/monokai.css"
+      id="highlight-theme"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section>
+          <h1>C++ Recap</h1>
+        </section>
+        <section>
+          <h1>C isn't that hard</h1>
+          <p>
+            <code>void (*(*f[])())()</code> defines f as an array of unspecified
+            size, of pointers to functions that return pointers to functions
+            that return <code>void</code>.
+          </p>
+        </section>
+        <section>
+          <p>C++ is hard.</p>
+          <p>But there are some friends</p>
+          <a href="https://en.cppreference.com">cppreference</a>
+          <a href="">Effective Modern C++</a>
+        </section>
+        <section>
+          <p>C++ code consists of two types of files</p>
+          <p>headers - .h | .hh | .hpp | .hxx</p>
+          <p>sources - .cpp | .cc | .cxx</p>
+        </section>
+        <section>
+          <p>Source files can be compiled to</p>
+          <p>
+            object file which <span class="important">is not executable</span> -
+            .o
+          </p>
+          <p>
+            or to an <span style="color: #0c0">executable binary</span> that you
+            can run
+          </p>
+        </section>
+        <section>
+          <p>Use the following for source compilation with gcc</p>
+          <pre><code>$ g++ main.cpp</code></pre>
+          <p>It will create executable binary named a.out</p>
+          <pre><code>$ g++ main.cpp -o hello</code></pre>
+          <p>It will create executable binary named hello. After</p>
+          <pre><code>$ ./hello</code></pre>
+          <p>Program will run</p>
+        </section>
+        <section>
+          <p>Object files .o are intermediate step of compilation</p>
+          <p>
+            Multiple object files can be linked to
+            <span style="color: #0c0">executable binary</span>
+          </p>
+          <pre><code>$ g++ -c main.cpp -o hello.o</code></pre>
+          <p>-c option is used to compile source to object file</p>
+        </section>
+        <section>
+          <p>Preprocessor process source files before compilation</p>
+          <p>All lines started with # are Preprocessor directives.</p>
+          <p>
+            For example line <code>#include &lt;memory&gt;</code> will be
+            replaced by preprocesor with content of memory file
+          </p>
+          <p>Use -E flag to see how preprocessor works</p>
+          <pre><code>	g++ -E main.cpp -o processed-main.cpp</code></pre>
+        </section>
+        <section data-background-color="white">
+          <img src="img//steps.png" />
+        </section>
+        <section>
+          <p>
+            <span style="color: #55c">Compilation Unit</span> is an each source
+            file included for compilation
+          </p>
+          <pre><code> g++ main.cpp feature1.cpp feature2.cpp </code></pre>
+          <p>There are three compilation units.</p>
+          <p>All of these will be linked together into executable.</p>
+        </section>
+
+        <section>
+          <h3>Pointer vs Reference</h3>
+          <section>
+            <p>Pointer store memory address.</p>
+            <p>Pointer type tells what data are stored at this address.</p>
+            <p>Pointer can point to nothing like(NULL value in C)</p>
+            <p class="important">
+              Since C++11 we use <code>nullptr</code> keyword instead.
+            </p>
+          </section>
+          <section>
+            <p>* (asterisk) declares a pointer of given type</p>
+            <code>int *pointer;</code>
+            <p>
+              &amp; (ampersand) placed before variable returns its memory
+              address
+            </p>
+
+            <pre>
+			<code>
+	int variable = 12345;
+	int *pointer = &amp;variable;
+			</code>
+		    </pre>
+          </section>
+          <section>
+            <p>Reference is an alias to a variable.</p>
+            <p class="important">It doesn't store any address</p>
+            <p>Reference must be initialized before it can be used.</p>
+            <p class="important">
+              Something like empty reference doesn't exists
+            </p>
+          </section>
+          <section>
+            <h4>Reference operators</h4>
+            <p>&amp; (ampersand) declares a reference of given type</p>
+            <pre>
+			  <code>
+	  int variable = 12345;
+	  int &amp;ref = variable; // assign variable, not an adress
+  
+  </code></pre>
+            <p>Now, changing ref value impacts original variable</p>
+
+            <pre><code>
+	  ref = 9999; // value of variable changed to 9999
+		   
+  </code></pre>
+          </section>
+        </section>
+        <section>
+          <h4>declaration vs definition</h4>
+          <p>
+            Declaration
+            <span class="green">"I want to use that name with this type"</span>
+          </p>
+          <p>
+            Definition
+            <span class="green">"Declared name should works that way"</span>
+          </p>
+        </section>
+        <section>
+          <h4>extern keyword</h4>
+          <p>
+            <code>extern</code> tells that variable
+            <span class="important">
+              is defined in another compilation unit</span
+            >
+          </p>
+          <div class="twocolumn">
+            <div>
+              <pre><code>
+  // feature1.cpp
+  extern int *memory;
+
+</code></pre>
+            </div>
+            <div>
+              <pre><code>
+  // feature2.cpp
+  int *memory = new int[1024];
+
+</code></pre>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <script src="dist/reveal.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/markdown/markdown.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script>
+      // More info about initialization & config:
+      // - https://revealjs.com/initialization/
+      // - https://revealjs.com/config/
+      Reveal.initialize({
+        hash: true,
+
+        // Learn about plugins: https://revealjs.com/plugins/
+        plugins: [RevealMarkdown, RevealHighlight, RevealNotes],
+      });
+    </script>
+  </body>
+</html>
