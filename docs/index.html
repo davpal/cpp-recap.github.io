@@ -248,37 +248,38 @@ g++ -DMY_COOL_FEATURE_ENABLED main.cpp ...
             <p>It gives additional informations for compiler.</p>
           </section>
           <section>
-            <p>Assume we have more than one compilation unit</p>
+            <p>Assume we have multi-file project</p>
             <div class="twocolumn">
               <div>
                 <pre><code>
-// main.cpp
-#include "VoiceStream.h"
-
-int main() {
-  VoiceStream voiceStream;
-  voiceStream.append(51.6f);
-}
+  // main.cpp
+  #include "VoiceStream.h"
+  #include "VoiceConsole.h"
+  
+  int main() {
+    VoiceStream voice = VoiceConsole.receive();
+  }
   
   </code></pre>
-                <p class="important">Why VoiceStream is redeclared?</p>
+                <p class="important">Why VoiceStream is redefined?</p>
               </div>
               <div>
                 <pre><code>
-// VoiceStream.h
-class VoiceStream {
-  public:
-    void append(float sample);
+// VoiceConsole.h
+#include "VoiceStream.h"
+
+class VoiceConsole {
+    VoiceStream receive();
 };
   
   </code></pre>
                 <pre><code>
-// VoiceStream.cpp
-#include "VoiceStream.h"
-
-void VoiceStream::append(float sample) {
-  ...
-}
+  // VoiceStream.h
+  class VoiceStream {
+    public:
+      void append(float sample);
+  };
+                    
   
   </code></pre>
               </div>
